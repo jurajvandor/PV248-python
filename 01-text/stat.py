@@ -30,7 +30,7 @@ def century(f):
         r = re.compile(r"Composition Year: (.*)")
         res = r.match(line)
         if res is not None:
-            res2 = re.match(".*([0-9]{4})", res.group(1).strip())
+            res2 = re.match(".*([1-2][0-9]{3})", res.group(1).strip())
             if res2 is not None:
                 century = int(res2.group(1))/100 + 1
                 ctr[int(century)] += 1
