@@ -15,7 +15,7 @@ def composer(f):
         r = re.compile(r"Composer: (.*)")
         res = r.match(line)
         if res is not None:
-            res2 = res.group(1).split("; ")
+            res2 = res.group(1).split(";")
             for item in res2:
                 res3 = re.sub(r'\([^)]*\)', '', item)
                 ctr[res3.strip()] += 1
@@ -30,14 +30,14 @@ def century(f):
         r = re.compile(r"Composition Year: (.*)")
         res = r.match(line)
         if res is not None:
-            res2 = re.match(".*([1-2][0-9]{3})", res.group(1).strip())
+            res2 = re.match(".*([0-9]{4})", res.group(1).strip())
             if res2 is not None:
                 century = int(res2.group(1))/100 + 1
                 ctr[int(century)] += 1
             else:
-                res3 = re.match("(.*)[0-9]{2}th century(.*)", res.group(1))
+                res3 = re.match(".*([0-9]{2})th century(.*)", res.group(1))
                 if res3 is not None:
-                    ctr[int("".join(filter(str.isdigit, res3.group(0))))] += 1
+                    ctr[int(res3.group(1))] += 1
     for k,v in ctr.items():
         print(str(k) + 'th century: ' + str(v))
 
