@@ -70,7 +70,5 @@ class Print:
     def composition(self):
         return self.edition.composition
 
-
 def load(filename):
     l = [];
-    
