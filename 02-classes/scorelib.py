@@ -72,3 +72,14 @@ class Print:
 
 def load(filename):
     l = [];
+    file = open(sys.argv[1], 'r')
+    entry = []
+    for line in file:
+        if line == '':
+            parseEntry(entry)
+            entry = []
+        else:
+            entry.add(line)
+
+def parseEntry(entry):
+    p = Print()
