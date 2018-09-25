@@ -2,12 +2,15 @@ import sys
 import re
 from collections import Counter
 
+
 def readfile():
     f = open(sys.argv[1], 'r')
     if sys.argv[2] == 'composer':
         composer(f)
     if sys.argv[2] == 'century':
         century(f)
+    f.close()
+
 
 def composer(f):
     ctr = Counter()
