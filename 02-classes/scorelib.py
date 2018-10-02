@@ -67,7 +67,7 @@ class Print:
             dictionary['Partiture'] = 'no'
         dictionary['Incipit'] = self.edition.composition.incipit
         for k, v in dictionary.items():
-            if v is not None and v != '' and v != '0' and k.split(" ")[0] != "Voice":
+            if (v is not None and v != '' and v != '0') or k.split(" ")[0] == "Voice":
                 print(k + ': ' + str(v))
 
     def composition(self):
@@ -104,15 +104,15 @@ def parse_entry(entry):
         split = line.split(':')
         if len(split) < 2:
             continue
+        if len(split) > 2:
+            split[1] += ":" + split[2]
+            if len(split) > 3:
+                split[1] += ":" + split[3]
         split[1] = split[1].strip()
         if split[0].split(' ')[0] == 'Voice':
             composition.voice.append(parse_voice(split[1]))
         if split[1] == '':
             continue
-        if len(split) > 2:
-            split[1] += ":" + split[2].strip()
-            if len(split) > 3:
-                split[1] += ":" + split[3].strip()
         if split[0] == 'Print Number':
             p.print_id = int(split[1])
         if split[0] == 'Composer':
