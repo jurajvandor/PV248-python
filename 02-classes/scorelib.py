@@ -203,7 +203,7 @@ def parse_voice(line):
     regex = re.match(r'^(\S+--\S+)(.*)', line.strip())
     rng = None
     if regex is not None:
-        rng = regex.group(1).strip(',')
+        rng = regex.group(1).strip(',').strip(';')
         name = regex.group(2).strip()
         if name == '':
             name = None
