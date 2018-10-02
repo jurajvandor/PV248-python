@@ -67,7 +67,7 @@ class Print:
             dictionary['Partiture'] = 'no'
         dictionary['Incipit'] = self.edition.composition.incipit
         for k, v in dictionary.items():
-            if v is not None and v != '' and v != '0':
+            if v is not None and v != '' and v != '0' and k.split(" ")[0] != "Voice":
                 print(k + ': ' + str(v))
 
     def composition(self):
@@ -105,6 +105,8 @@ def parse_entry(entry):
         if len(split) < 2:
             continue
         split[1] = split[1].strip()
+        if split[0].split(' ')[0] == 'Voice':
+            composition.voice.append(parse_voice(split[1]))
         if split[1] == '':
             continue
         if len(split) > 2:
@@ -129,8 +131,6 @@ def parse_entry(entry):
             edition.name = split[1]
         if split[0] == 'Editor':
             parse_person_editor(split[1], edition.authors)
-        if split[0].split(' ')[0] == 'Voice':
-            composition.voice.append(parse_voice(split[1]))
         if split[0] == 'Partiture' and split[1] == 'yes':
             p.partiture = True
         if split[0] == 'Incipit':
@@ -213,6 +213,8 @@ def parse_voice(line):
 
 
 def format_voice(voice):
+    if voice is None:
+        return ''
     s = ''
     if voice.range is not None:
         s += voice.range
