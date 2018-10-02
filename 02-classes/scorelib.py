@@ -107,6 +107,10 @@ def parse_entry(entry):
         split[1] = split[1].strip()
         if split[1] == '':
             continue
+        if len(split) > 2:
+            split[1] += ":" + split[2].strip()
+            if len(split) > 3:
+                split[1] += ":" + split[3].strip()
         if split[0] == 'Print Number':
             p.print_id = int(split[1])
         if split[0] == 'Composer':
