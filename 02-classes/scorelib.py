@@ -21,7 +21,7 @@ class Composition:
         self.genre = genre
         self.year = year
         self.voice = []
-        self.author = []
+        self.authors = []
 
 
 class Edition:
@@ -41,11 +41,11 @@ class Print:
         dictionary = {}
         dictionary['Print Number'] = self.print_id
         s = ''
-        for i, k in enumerate(self.edition.composition.author):
+        for i, k in enumerate(self.edition.composition.authors):
             s += k.name
             if k.born is not None or k.died is not None:
                 s += ' (' + to_str(k.born) + '--' + to_str(k.died) + ')'
-            if i+1 != len(self.edition.composition.author):
+            if i+1 != len(self.edition.composition.authors):
                 s += '; '
         dictionary['Composer'] = s
         dictionary['Title'] = self.edition.composition.name
@@ -116,7 +116,7 @@ def parse_entry(entry):
         if split[0] == 'Print Number':
             p.print_id = int(split[1])
         if split[0] == 'Composer':
-            parse_person_composer(split[1], composition.author)
+            parse_person_composer(split[1], composition.authors)
         if split[0] == 'Title':
             composition.name = split[1]
         if split[0] == 'Genre':
