@@ -115,6 +115,8 @@ def parse_entry(entry):
                 split[1] += ":" + split[3]
         split[1] = split[1].strip()
         if split[0].split(' ')[0] == 'Voice':
+            while len(composition.voice)+1 < int(split[0].split(' ')[1]):
+                composition.voice.append(None)
             composition.voice.append(parse_voice(split[1]))
         if split[1] == '':
             continue
