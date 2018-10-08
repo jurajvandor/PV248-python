@@ -86,7 +86,12 @@ def load(filename):
             entry.append(line)
     if len(entry) > 1:
         prints.append(parse_entry(entry))
+    prints.sort(key=sort_func)
     return prints
+
+
+def sort_func(p):
+    return p.print_id
 
 
 def to_str(i):
