@@ -138,8 +138,10 @@ def parse_entry(entry):
             edition.name = split[1]
         if split[0] == 'Editor':
             parse_person_editor(split[1], edition.authors)
-        if split[0] == 'Partiture' and split[1] == 'yes':
-            p.partiture = True
+        if split[0] == 'Partiture':
+            regex = re.match("yes.*", split[1])
+            if regex is not None:
+                p.partiture = True
         if split[0] == 'Incipit':
             composition.incipit = split[1]
     return p
