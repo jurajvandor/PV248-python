@@ -67,7 +67,7 @@ class Print:
             dictionary['Partiture'] = 'no'
         dictionary['Incipit'] = self.edition.composition.incipit
         for k, v in dictionary.items():
-            if (v is not None and v != '' and v != '0') or k.split(" ")[0] == "Voice":
+            if (v is not None and v != '' and v != 'None') or k.split(" ")[0] == "Voice":
                 print(k + ': ' + str(v))
 
     def composition(self):
@@ -102,7 +102,7 @@ def to_str(i):
 
 
 def parse_entry(entry):
-    composition = Composition(None, None, None, None, 0)
+    composition = Composition(None, None, None, None, None)
     edition = Edition(composition, None)
     p = Print(edition, None, False)
     for line in entry:
