@@ -1,5 +1,6 @@
 import re
 
+
 class Person:
     def __init__(self, name, born, died):
         self.name = name
@@ -20,7 +21,7 @@ class Composition:
         self.key = key
         self.genre = genre
         self.year = year
-        self.voice = []
+        self.voices = []
         self.authors = []
 
 
@@ -59,7 +60,7 @@ class Print:
             if i+1 != len(self.edition.authors):
                 s += ', '
         dictionary['Editor'] = s
-        for i, k in enumerate(self.edition.composition.voice):
+        for i, k in enumerate(self.edition.composition.voices):
             dictionary['Voice ' + str(i+1)] = format_voice(k)
         if self.partiture:
             dictionary['Partiture'] = 'yes'
@@ -115,9 +116,9 @@ def parse_entry(entry):
                 split[1] += ":" + split[3]
         split[1] = split[1].strip()
         if split[0].split(' ')[0] == 'Voice':
-            while len(composition.voice)+1 < int(split[0].split(' ')[1]):
-                composition.voice.append(None)
-            composition.voice.append(parse_voice(split[1]))
+            while len(composition.voices)+1 < int(split[0].split(' ')[1]):
+                composition.voices.append(None)
+            composition.voices.append(parse_voice(split[1]))
         if split[1] == '':
             continue
         if split[0] == 'Print Number':
