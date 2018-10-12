@@ -39,7 +39,7 @@ def insert_to_db(prints, conn):
 
 
 def insert_person(person, c):
-    c.execute("select * from person where name = ?", (person.name,))
+    c.execute("select * from person where name IS ?", (person.name,))
     res = c.fetchone()
     if res is None:
         c.execute("insert into person(born, died, name) values (?, ?, ?)", (person.born, person.died, person.name))
@@ -53,7 +53,7 @@ def insert_person(person, c):
 
 
 def insert_composition(com, c):
-    c.execute("select * from score where name = ? and genre = ? and key = ? and incipit = ? and year = ?", (com.name, com.genre, com.key, com.incipit, com.year))
+    c.execute("select * from score where name IS ? and genre IS ? and key IS ? and incipit IS ? and year IS ?", (com.name, com.genre, com.key, com.incipit, com.year))
     res = c.fetchone()
     if res is None:
         c.execute("insert into score(name, genre, key, incipit, year) values (?, ?, ?, ?, ?)", (com.name, com.genre, com.key, com.incipit, com.year))
@@ -64,7 +64,7 @@ def insert_composition(com, c):
 def insert_voice(voice, c, number, com_id):
     if voice is None:
         voice = scorelib.Voice(None, None)
-    c.execute("select * from voice where name = ? and range = ? and number = ? and score = ?", (voice.name, voice.range, number, com_id))
+    c.execute("select * from voice where name IS ? and range IS ? and number IS ? and score IS ?", (voice.name, voice.range, number, com_id))
     res = c.fetchone()
     if res is None:
         c.execute("insert into voice(number, score, range, name) values (?, ?, ?, ?)", (number, com_id, voice.range, voice.name))
@@ -73,7 +73,7 @@ def insert_voice(voice, c, number, com_id):
 
 
 def insert_edition(ed, c, com_id):
-    c.execute("select * from edition where score = ? and name = ?", (com_id, ed.name))
+    c.execute("select * from edition where score IS ? and name IS ?", (com_id, ed.name))
     res = c.fetchone()
     if res is None:
         c.execute("insert into edition(score, name, year) values (?, ?, ?)", (com_id, ed.name, None))
@@ -83,7 +83,7 @@ def insert_edition(ed, c, com_id):
 
 def insert_composition_authors(com_id, com_author_ids, c):
     for author in com_author_ids:
-        c.execute("select * from score_author where score = ? and composer = ?", (com_id, author))
+        c.execute("select * from score_author where score IS ? and composer IS ?", (com_id, author))
         res = c.fetchone()
         if res is None:
             c.execute("insert into score_author(score, composer) values (?, ?)", (com_id, author))
@@ -93,7 +93,7 @@ def insert_composition_authors(com_id, com_author_ids, c):
 
 def insert_edition_authors(ed_id, ed_author_ids, c):
     for author in ed_author_ids:
-        c.execute("select * from edition_author where edition = ? and editor = ?", (ed_id, author))
+        c.execute("select * from edition_author where edition IS ? and editor IS ?", (ed_id, author))
         res = c.fetchone()
         if res is None:
             c.execute("insert into edition_author(edition, editor) values (?, ?)", (ed_id, author))
@@ -105,7 +105,7 @@ def insert_print(p, ed_id, c):
     partiture = 'N'
     if p.partiture:
         partiture = 'Y'
-    c.execute("select * from print where id = ? and partiture = ? and edition = ?", (p.print_id, partiture, ed_id))
+    c.execute("select * from print where id IS ? and partiture IS ? and edition IS ?", (p.print_id, partiture, ed_id))
     res = c.fetchone()
     if res is None:
         c.execute("insert into print(id, partiture, edition) values (?, ?, ?)", (p.print_id, partiture, ed_id))
