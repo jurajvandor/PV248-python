@@ -53,12 +53,41 @@ def insert_person(person, c):
 
 
 def insert_composition(com, c):
-    c.execute("select * from score where name IS ? and genre IS ? and key IS ? and incipit IS ? and year IS ?", (com.name, com.genre, com.key, com.incipit, com.year))
-    res = c.fetchone()
-    if res is None:
+    composition_id = check_voices_and_authors(com, c)
+    if composition_id == -1:
         c.execute("insert into score(name, genre, key, incipit, year) values (?, ?, ?, ?, ?)", (com.name, com.genre, com.key, com.incipit, com.year))
         return c.lastrowid
-    return res[0]
+    return composition_id
+
+
+def check_voices_and_authors(com, c):
+    c.execute("select * from score where name IS ? and genre IS ? and key IS ? and incipit IS ? and year IS ?", (com.name, com.genre, com.key, com.incipit, com.year))
+    res = c.fetchall()
+    if len(res) > 0:
+        for item in res:
+            c.execute("select * from (select composer from score_author where score IS ?) inner join person on composer = person.id", (item[0],))
+            authors_ok = compare_persons(com.authors, c.fetchall())
+            c.execute("select * from voice where score IS ?", (item[0],))
+            voices_ok = compare_voices(com.voices, c.fetchall())
+            if authors_ok and voices_ok:
+                return item[0]
+    return -1
+
+
+
+
+def compare_voices(list_voices, list_tuples):
+    if len(list_tuples) != len(list_voices):
+        return False
+    list_tuples.sort(key=sorting_fun)
+    for i, item in enumerate(list_tuples):
+        if list_voices[i].name != item[4] or list_voices[i].range != item[3]:
+            return False
+    return True
+
+
+def sorting_fun(item):
+    return item[1]
 
 
 def insert_voice(voice, c, number, com_id):
@@ -75,10 +104,26 @@ def insert_voice(voice, c, number, com_id):
 def insert_edition(ed, c, com_id):
     c.execute("select * from edition where score IS ? and name IS ?", (com_id, ed.name))
     res = c.fetchone()
-    if res is None:
+    authors_ok = True
+    if res is not None:
+        c.execute("select * from ((select editor from edition_author where edition IS ?) natural inner join person)", (res[0],))
+        authors_ok = compare_persons(ed.authors, c.fetchall())
+    if res is None or not authors_ok:
         c.execute("insert into edition(score, name, year) values (?, ?, ?)", (com_id, ed.name, None))
         return c.lastrowid
     return res[0]
+
+
+def compare_persons(list_persons, list_tuples):
+    bool = True
+    if len(list_tuples) != len(list_persons):
+        return False
+    for item in list_tuples:
+        bool2 = False
+        for person in list_persons:
+            bool2 = bool2 or person.name == item[4]
+        bool = bool and bool2
+    return bool
 
 
 def insert_composition_authors(com_id, com_author_ids, c):
