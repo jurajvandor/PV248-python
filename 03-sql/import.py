@@ -47,7 +47,7 @@ def insert_person(person, c):
     else:
         if person.born is not None and res[1] is None:
             c.execute("update person set born = ? where id = ?", (person.born, res[0]))
-        if person.died is not None and res[1] is None:
+        if person.died is not None and res[2] is None:
             c.execute("update person set died = ? where id = ?", (person.died, res[0]))
         return res[0]
 
@@ -87,8 +87,6 @@ def insert_composition_authors(com_id, com_author_ids, c):
         res = c.fetchone()
         if res is None:
             c.execute("insert into score_author(score, composer) values (?, ?)", (com_id, author))
-            return c.lastrowid
-        return res[0]
 
 
 def insert_edition_authors(ed_id, ed_author_ids, c):
@@ -97,8 +95,6 @@ def insert_edition_authors(ed_id, ed_author_ids, c):
         res = c.fetchone()
         if res is None:
             c.execute("insert into edition_author(edition, editor) values (?, ?)", (ed_id, author))
-            return c.lastrowid
-        return res[0]
 
 
 def insert_print(p, ed_id, c):
