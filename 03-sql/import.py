@@ -74,14 +74,12 @@ def check_voices_and_authors(com, c):
     return -1
 
 
-
-
 def compare_voices(list_voices, list_tuples):
     if len(list_tuples) != len(list_voices):
         return False
     list_tuples.sort(key=sorting_fun)
-    for i, item in enumerate(list_tuples):
-        if list_voices[i].name != item[4] or list_voices[i].range != item[3]:
+    for item in list_tuples:
+        if str(list_voices[item[1]-1].name) != str(item[4]) or str(list_voices[item[1]-1].range) != str(item[3]):
             return False
     return True
 
@@ -115,15 +113,15 @@ def insert_edition(ed, c, com_id):
 
 
 def compare_persons(list_persons, list_tuples):
-    bool = True
+    b1 = True
     if len(list_tuples) != len(list_persons):
         return False
     for item in list_tuples:
-        bool2 = False
+        b2 = False
         for person in list_persons:
-            bool2 = bool2 or person.name == item[4]
-        bool = bool and bool2
-    return bool
+            b2 = b2 or person.name == item[4]
+        b1 = b1 and b2
+    return b1
 
 
 def insert_composition_authors(com_id, com_author_ids, c):
