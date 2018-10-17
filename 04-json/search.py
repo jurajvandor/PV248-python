@@ -26,6 +26,12 @@ def create_json(list, db):
             id = item[0]
         dict = {}
         dict["Print Number"] = item[15]
+        composers = fetch_composers(item[5], db)
+        if len(composers) != 0:
+            s = []
+            for composer in composers:
+                s.append(composer[0])
+            dict["Composer"] = s
         if item[6] is not None:
             dict["Title"] = item[6]
         if item[7] is not None:
@@ -38,11 +44,9 @@ def create_json(list, db):
             dict["Edition"] = item[13]
         editors = fetch_editors(item[12], db)
         if len(editors) != 0:
-            s = ""
+            s = []
             for i, editor in enumerate(editors):
-                s += editor[0]
-                if i+1 != len(editors):
-                    s += ", "
+                s.append(editor[0])
             dict["Editor"] = s
         voices = fetch_voices(item[5], db)
         for voice in voices:
@@ -69,9 +73,16 @@ def fetch_voices(score_id, db):
     cursor.execute("select * from voice where score = ?", (score_id, ))
     return cursor.fetchall()
 
+
 def fetch_editors(edition_id, db):
     cursor = db.cursor()
     cursor.execute("select person.name from (select * from edition_author where edition = ?) inner join person on editor = person.id", (edition_id, ))
+    return cursor.fetchall()
+
+
+def fetch_composers(score_id, db):
+    cursor = db.cursor()
+    cursor.execute("select person.name from (select * from score_author where score = ?) inner join person on composer = person.id", (score_id,))
     return cursor.fetchall()
 
 
