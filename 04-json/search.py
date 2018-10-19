@@ -50,14 +50,13 @@ def create_json(list, db):
             dict["Editor"] = s
         voices = fetch_voices(item[5], db)
         for voice in voices:
-            s = ""
-            if voice[3] is not None:
-                s += voice[3]
-            if voice[4] is not None:
-                if voice[3] is not None:
-                    s += ", "
-                s += voice[4]
-            dict["Voice " + str(voice[1])] = s
+            v = {}
+            if voice[4] is not None and voice[4] != "":
+                v["Name"] = voice[4]
+            if voice[3] is not None and voice[3] != "":
+                v["Range"] = voice[3]
+            if len(v) != 0:
+                dict["Voice " + str(voice[1])] = v
         if item[16] == 'Y':
             dict["Partiture"] = True
         else:
