@@ -17,12 +17,10 @@ def create_json(list, db):
         return
     res = {}
     list.sort(key=lambda x: x[0])
-    id = list[0][0]
-    prints_of_one_author = []
+    id = -1
     for item in list:
         if item[0] != id:
-            res[item[1]] = prints_of_one_author
-            prints_of_one_author = []
+            res[item[1]] = []
             id = item[0]
         dict = {}
         dict["Print Number"] = item[15]
@@ -63,7 +61,7 @@ def create_json(list, db):
             dict["Partiture"] = False
         if item[9] is not None:
             dict["Incipit"] = item[9]
-        prints_of_one_author.append(dict)
+        res[item[1]].append(dict)
     json.dump(res, sys.stdout, indent=4, ensure_ascii=False)
 
 
