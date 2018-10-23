@@ -25,11 +25,10 @@ def create_json(list, db):
         dict = {}
         dict["Print Number"] = item[15]
         composers = fetch_composers(item[5], db)
-        if len(composers) != 0:
-            s = []
-            for composer in composers:
-                s.append(composer[0])
-            dict["Composer"] = s
+        s = []
+        for composer in composers:
+            s.append(composer[0])
+        dict["Composer"] = s
         if item[6] is not None:
             dict["Title"] = item[6]
         if item[7] is not None:
@@ -41,11 +40,10 @@ def create_json(list, db):
         if item[13] is not None:
             dict["Edition"] = item[13]
         editors = fetch_editors(item[12], db)
-        if len(editors) != 0:
-            s = []
-            for i, editor in enumerate(editors):
-                s.append(editor[0])
-            dict["Editor"] = s
+        s = []
+        for i, editor in enumerate(editors):
+            s.append(editor[0])
+        dict["Editor"] = s
         voices = fetch_voices(item[5], db)
         for voice in voices:
             v = {}
@@ -63,6 +61,7 @@ def create_json(list, db):
             dict["Incipit"] = item[9]
         res[item[1]].append(dict)
     json.dump(res, sys.stdout, indent=4, ensure_ascii=False)
+    print()
 
 
 def fetch_voices(score_id, db):
