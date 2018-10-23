@@ -37,7 +37,7 @@ def create_json(list, db):
             dict["Composition Year"] = item[10]
         if item[13] is not None:
             dict["Edition"] = item[13]
-        editors = fetch_editors(item[12], db)
+        editors = fetch_editors(item[11], db)
         s = []
         for i, editor in enumerate(editors):
             s.append(editor[0])
