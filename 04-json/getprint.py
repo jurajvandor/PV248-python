@@ -24,6 +24,7 @@ def create_json(list):
             dict["died"] = item[2]
         res.append(dict)
     json.dump(res, sys.stdout, indent=4, ensure_ascii=False)
+    print()
 
 
 create_json(db_fetch())
