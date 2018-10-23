@@ -13,8 +13,6 @@ def db_fetch(db):
 
 
 def create_json(list, db):
-    if len(list) == 0:
-        return
     res = {}
     list.sort(key=lambda x: x[0])
     id = -1
