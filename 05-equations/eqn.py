@@ -40,9 +40,6 @@ def parse():
 
 
 def compute(parsed_lists):
-    if len(parsed_lists[1]) != len(parsed_lists[2]):
-        print("solution space dimension: " + str(abs(len(parsed_lists[1]) - len(parsed_lists[2]))))
-        return
     matrix = numpy.array(parsed_lists[0])
     list_of_constants = numpy.array(parsed_lists[2])
     rank_matrix = numpy.linalg.matrix_rank(matrix)
@@ -50,6 +47,9 @@ def compute(parsed_lists):
     rank_augumented_matrix = numpy.linalg.matrix_rank(augumented_matrix)
     if rank_augumented_matrix != rank_matrix:
         print("no solution")
+        return
+    if len(parsed_lists[1]) != len(parsed_lists[2]):
+        print("solution space dimension: " + str(abs(len(parsed_lists[1]) - len(parsed_lists[2]))))
         return
     result = numpy.linalg.solve(matrix, list_of_constants)
     d = dict(zip(parsed_lists[1], result))
