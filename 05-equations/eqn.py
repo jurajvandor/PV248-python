@@ -3,6 +3,7 @@ import re
 import sys
 import collections
 
+
 def parse():
     file = open(sys.argv[1])
     variables = []
@@ -15,7 +16,7 @@ def parse():
         for i, ex in enumerate(split):
             if i+1 == len(split):
                 other_side_of_eq.append(int(ex))
-            res = re.match(r"([0-9]*)([a-zA-Z])", ex)
+            res = re.match(r"([0-9]*)([a-z])", ex)
             if res is None:
                 continue
             if res.group(1) != "":
@@ -48,8 +49,8 @@ def compute(parsed_lists):
     if rank_augumented_matrix != rank_matrix:
         print("no solution")
         return
-    if len(parsed_lists[1]) != len(parsed_lists[2]):
-        print("solution space dimension: " + str(abs(len(parsed_lists[1]) - len(parsed_lists[2]))))
+    if len(parsed_lists[1]) != rank_augumented_matrix:
+        print("solution space dimension: " + str(abs(len(parsed_lists[1]) - rank_augumented_matrix)))
         return
     result = numpy.linalg.solve(matrix, list_of_constants)
     d = dict(zip(parsed_lists[1], result))
