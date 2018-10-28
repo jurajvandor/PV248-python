@@ -11,6 +11,8 @@ def parse():
     other_side_of_eq = []
     length = 0
     for line in file:
+        if line.strip() == "":
+            continue
         split = line.split(" ")
         list = [0]*length
         for i, ex in enumerate(split):
