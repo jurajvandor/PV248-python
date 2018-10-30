@@ -2,7 +2,7 @@ import wave
 import numpy
 import sys
 import struct
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 def parse_wave(file):
@@ -30,7 +30,7 @@ def parse_wave(file):
                     max = freqes[i]
                 if min is None or freqes[i] < min:
                     min = freqes[i]
-        fig, ax1 = plt.subplots(1, figsize=(10, 5), sharex=True, sharey=True)
+        #fig, ax1 = plt.subplots(1, figsize=(10, 5), sharex=True, sharey=True)
         #ax1.set_title('transformation')
         #ax1.set_xlim([0, nq_freq])
         #ax1.plot(freqes, rfft_res, 'b', lw=2)
