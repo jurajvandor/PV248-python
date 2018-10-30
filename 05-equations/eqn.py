@@ -5,7 +5,7 @@ import collections
 
 
 def parse():
-    file = open(sys.argv[1])
+    file = open(sys.argv[1], 'r')
     variables = []
     list_of_lists = []
     other_side_of_eq = []
