@@ -57,7 +57,7 @@ def compute(parsed_lists):
     result = numpy.linalg.solve(matrix, list_of_constants)
     d = dict(zip(parsed_lists[1], result))
     ordered_dict = collections.OrderedDict(sorted(d.items()))
-    s = ""
+    s = "solution: "
     for variable, value in ordered_dict.items():
         s += variable + " = " + str(value) + ", "
     print(s[:-2])
