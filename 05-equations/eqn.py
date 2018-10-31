@@ -11,10 +11,12 @@ def parse():
     other_side_of_eq = []
     length = 0
     for line in file:
-        if line.strip() == "":
+        line = line.strip()
+        if line == "":
             continue
         split = line.split(" ")
-        list = [0]*length
+        lst = [0]*length
+        split = list(filter(lambda a: a != '', split))
         for i, ex in enumerate(split):
             if i+1 == len(split):
                 other_side_of_eq.append(int(ex))
@@ -30,14 +32,14 @@ def parse():
                 coefficient *= -1
             if variable in variables:
                 index = variables.index(variable)
-                list[index] = coefficient
+                lst[index] = coefficient
             else:
-                list.append(coefficient)
+                lst.append(coefficient)
                 variables.append(variable)
                 length += 1
                 for l in list_of_lists:
                     l.append(0)
-        list_of_lists.append(list)
+        list_of_lists.append(lst)
     file.close()
     return list_of_lists, variables, other_side_of_eq
 
