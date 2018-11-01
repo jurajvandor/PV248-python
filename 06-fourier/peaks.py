@@ -14,13 +14,11 @@ def parse_wave(file):
         frames = wav.readframes(frames_per_sample)
         decoded_frames = struct.unpack("%ih" % (frames_per_sample * wav.getnchannels()), frames)
         decoded_frames = numpy.array(decoded_frames)
-        normalize = frames_per_sample
         if wav.getnchannels() == 2:
             decoded_frames = decoded_frames.reshape(-1, 2)
             decoded_frames = decoded_frames.sum(axis=1) / 2
-            normalize = normalize * 2
         nq_freq = wav.getframerate()//2
-        rfft_res = numpy.fft.rfft(decoded_frames) / normalize
+        rfft_res = numpy.fft.rfft(decoded_frames) / frames_per_sample
         rfft_res = numpy.abs(rfft_res[:nq_freq])
         avg = numpy.average(rfft_res)
         freqes = numpy.fft.fftfreq(len(rfft_res)*2, 1 / wav.getframerate())[:nq_freq]
