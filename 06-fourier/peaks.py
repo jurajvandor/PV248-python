@@ -21,7 +21,7 @@ def parse_wave(file):
         rfft_res = numpy.fft.rfft(decoded_frames) / frames_per_sample
         rfft_res = numpy.abs(rfft_res[:nq_freq])
         avg = numpy.average(rfft_res)
-        freqes = numpy.fft.fftfreq(len(rfft_res)*2, 1 / wav.getframerate())[:nq_freq]
+        freqes = numpy.fft.fftfreq(frames_per_sample, 1 / wav.getframerate())[:nq_freq]
         for i, item in enumerate(rfft_res):
             if item > avg*20:
                 if max is None or freqes[i] > max:
@@ -39,6 +39,7 @@ def parse_wave(file):
         print("low = " + str(min) + ", high = " + str(max))
     else:
         print("no peaks")
+    wav.close()
 
 
 parse_wave(sys.argv[1])
