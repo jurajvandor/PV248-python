@@ -36,7 +36,7 @@ def parse_wave(file):
         #plt.tight_layout()
         #plt.show()
     if min is not None and max is not None:
-        print("low = " + str(min) + ", high = " + str(max))
+        print("low = " + str(int(min)) + ", high = " + str(int(max)))
     else:
         print("no peaks")
     wav.close()
