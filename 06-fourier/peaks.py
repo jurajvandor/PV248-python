@@ -17,9 +17,8 @@ def parse_wave(file):
         if wav.getnchannels() == 2:
             decoded_frames = decoded_frames.reshape(-1, 2)
             decoded_frames = decoded_frames.sum(axis=1) / 2
-        nq_freq = wav.getframerate()//2
         rfft_res = numpy.fft.rfft(decoded_frames) / frames_per_sample
-        rfft_res = numpy.abs(rfft_res[:nq_freq])
+        rfft_res = numpy.abs(rfft_res)
         avg = numpy.average(rfft_res)
         for i, item in enumerate(rfft_res):
             if item > avg*20:
@@ -28,6 +27,7 @@ def parse_wave(file):
                 if min is None or i < min:
                     min = i
         #fig, ax1 = plt.subplots(1, figsize=(10, 5), sharex=True, sharey=True)
+        #nq_freq = frames_per_sample//2
         #ax1.set_title('transformation')
         #ax1.set_xlim([0, nq_freq])
         #ax1.plot(rfft_res, 'b', lw=2)
