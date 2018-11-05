@@ -21,22 +21,21 @@ def parse_wave(file):
         rfft_res = numpy.fft.rfft(decoded_frames) / frames_per_sample
         rfft_res = numpy.abs(rfft_res[:nq_freq])
         avg = numpy.average(rfft_res)
-        freqes = numpy.fft.fftfreq(frames_per_sample, 1 / wav.getframerate())[:nq_freq]
         for i, item in enumerate(rfft_res):
             if item > avg*20:
-                if max is None or freqes[i] > max:
-                    max = freqes[i]
-                if min is None or freqes[i] < min:
-                    min = freqes[i]
+                if max is None or i > max:
+                    max = i
+                if min is None or i < min:
+                    min = i
         #fig, ax1 = plt.subplots(1, figsize=(10, 5), sharex=True, sharey=True)
         #ax1.set_title('transformation')
         #ax1.set_xlim([0, nq_freq])
-        #ax1.plot(freqes, rfft_res, 'b', lw=2)
+        #ax1.plot(rfft_res, 'b', lw=2)
         #ax1.plot(range(0, nq_freq), [avg*20]*nq_freq)
         #plt.tight_layout()
         #plt.show()
     if min is not None and max is not None:
-        print("low = " + str(int(min)) + ", high = " + str(int(max)))
+        print("low = " + str(min) + ", high = " + str(max))
     else:
         print("no peaks")
     wav.close()
