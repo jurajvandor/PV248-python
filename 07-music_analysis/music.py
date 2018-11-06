@@ -54,7 +54,7 @@ def parse_wave(file):
             segment_start = offset
         offset += 1
     if last_result != "":
-        time = "{0:.1f}".format(segment_start / 10) + "-" + "{0:.1f}".format((offset - 1) / 10)
+        time = "{0:.1f}".format(segment_start / 10) + "-" + "{0:.1f}".format(offset / 10)
         print(time + " " + last_result)
     wav.close()
 
@@ -65,7 +65,6 @@ def get_results(peaks):
     for i, freq in enumerate(peaks):
         if i == 3:
             break
-        #something from google whitch i do not understand
         A4 = int(sys.argv[1])
         C0 = A4 * pow(2, -4.75)
         name = ["c", "cis", "d", "es", "e", "f", "fis", "g", "gis", "a", "bes", "b"]
@@ -73,9 +72,6 @@ def get_results(peaks):
         h = int(round(12 * numpy.log2(freq[0] / C0)))
         octave = int(h // 12)
         n = int(h % 12)
-        #some other shit from google
-        #c = 1200 × log2 (f2 / f1)
-        #and another fucking equation from google
         a = pow(2, 1/12)
         c = 1200 * numpy.log2(freq[0]/(440*pow(a, h-57)))
         if octave < 3:
