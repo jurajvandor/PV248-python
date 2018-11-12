@@ -17,7 +17,7 @@ def parse_wave(file):
     step = wav.getframerate()//10
     last_result = ""
     segment_start = None
-    while (offset*step + frames_per_sample) < wav.getnframes():
+    while (offset*step + frames_per_sample) <= wav.getnframes():
         sample = decoded_frames[offset*step:(offset*step+frames_per_sample)]
         rfft_res = numpy.fft.rfft(sample) / frames_per_sample
         rfft_res = numpy.abs(rfft_res)
@@ -42,7 +42,7 @@ def parse_wave(file):
                     cluser_start = None
         result = get_results(peaks)
         if last_result != "" and last_result != result:
-            time = "{0:.1f}".format(segment_start/10) + "-" + "{0:.1f}".format(offset/10)
+            time = "{0:.1f}".format(segment_start / 10) + "-" + "{0:.1f}".format(offset / 10)
             print(time + " " + last_result)
             last_result = result
             if result != "":
@@ -60,27 +60,29 @@ def parse_wave(file):
 
 
 def get_results(peaks):
-    peaks.sort(key=lambda a: a[1])
+    peaks.sort(key=lambda a: a[1], reverse=True)
     string = ""
     for i, freq in enumerate(peaks):
+        if freq[0] == 0:
+            continue
         if i == 3:
             break
         A4 = int(sys.argv[1])
         C0 = A4 * pow(2, -4.75)
         name = ["c", "cis", "d", "es", "e", "f", "fis", "g", "gis", "a", "bes", "b"]
-        cap_name = ["C", "Cis", "D", "Es", "E", "F", "Fis", "g", "Gis", "A", "Bes", "B"]
+        cap_name = ["C", "Cis", "D", "Es", "E", "F", "Fis", "G", "Gis", "A", "Bes", "B"]
         h = int(round(12 * numpy.log2(freq[0] / C0)))
         octave = int(h // 12)
         n = int(h % 12)
         a = pow(2, 1/12)
-        c = 1200 * numpy.log2(freq[0]/(440*pow(a, h-57)))
+        c = 1200 * numpy.log2(freq[0]/(A4*pow(a, h-57)))
         if octave < 3:
             string += cap_name[n] + (2-octave)*","
         else:
             string += name[n] + (octave-3)*"'"
         if c >= 0:
             string += "+"
-        string += str(int(c)) + " "
+        string += str(int(round(c))) + "#" + str(freq) + " "
     return string.strip()
 
 
