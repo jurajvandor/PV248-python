@@ -61,12 +61,12 @@ def parse_wave(file):
 
 def get_results(peaks):
     peaks.sort(key=lambda a: a[1], reverse=True)
+    peaks = peaks[0:3]
+    peaks.sort(key=lambda a: a[0])
     string = ""
     for i, freq in enumerate(peaks):
         if freq[0] == 0:
             continue
-        if i == 3:
-            break
         A4 = int(sys.argv[1])
         C0 = A4 * pow(2, -4.75)
         name = ["c", "cis", "d", "es", "e", "f", "fis", "g", "gis", "a", "bes", "b"]
@@ -82,7 +82,7 @@ def get_results(peaks):
             string += name[n] + (octave-3)*"'"
         if c >= 0:
             string += "+"
-        string += str(int(round(c))) + "#" + str(freq) + " "
+        string += str(int(round(c))) + " "
     return string.strip()
 
 
