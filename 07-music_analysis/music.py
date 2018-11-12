@@ -80,9 +80,10 @@ def get_results(peaks):
             string += cap_name[n] + (2-octave)*","
         else:
             string += name[n] + (octave-3)*"'"
+        c = round(c)
         if c >= 0:
             string += "+"
-        string += str(int(round(c))) + " "
+        string += str(int(c)) + " "
     return string.strip()
 
 
