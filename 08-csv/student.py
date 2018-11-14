@@ -2,7 +2,6 @@ import pandas
 import sys
 import json
 import numpy
-import time
 import datetime
 
 
@@ -25,19 +24,17 @@ def print_json(stud):
             dict_dates[key[:-3]] = stud[key]
         else:
             dict_dates[key[:-3]] = dict_dates.get(key[:-3]) + stud[key]
-    dates = numpy.array([int(datetime.datetime(int(key[0:4]), int(key[5:7]), int(key[8:10])).timestamp()//(60*60*24)-17799) for key in dict_dates.keys()])
-    print(dates[1])
+    dates = numpy.array([int(datetime.datetime(int(key[0:4]), int(key[5:7]), int(key[8:10])).timestamp()//(60*60*24)) for key in dict_dates.keys()])
+    min = dates.min()
+    dates = dates - min
     cumulated_points = numpy.cumsum(numpy.array([dict_dates[key] for key in dict_dates.keys()]))
-    dates = numpy.vstack([dates, numpy.ones(len(dates))]).T
-    print(dates)
-    print(cumulated_points)
+    dates = numpy.vstack([dates, numpy.zeros(len(dates))]).T
     m, c = numpy.linalg.lstsq(dates, cumulated_points, rcond=None)[0]
     json_dict["regression slope"] = m
-    print(c)
-    result = numpy.linalg.solve([[m]], [c+20])
-    json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+17799)*60*60*24))[0:10]
     result = numpy.linalg.solve([[m]], [c+16])
-    json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+17799)*60*60*24))[0:10]
+    json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+min)*60*60*24))[0:10]
+    result = numpy.linalg.solve([[m]], [c+20])
+    json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+min)*60*60*24))[0:10]
     json.dump(json_dict, sys.stdout, indent=4)
 
 
