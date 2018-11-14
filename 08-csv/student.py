@@ -5,25 +5,31 @@ import numpy
 import datetime
 
 
-def print_json(stud):
-    dict_exercises = dict()
+def column_name(column, type):
+    if type == "dates":
+        return column[:-3]
+    if type == "exercises":
+        return column[-2:]
+    
+    
+def dict_of_values(stud, type):
+    dict_values = dict()
     for key in stud.keys():
-        if key[-2:] not in dict_exercises.keys():
-            dict_exercises[key[-2:]] = stud[key]
+        if column_name(key, type) not in dict_values.keys():
+            dict_values[column_name(key, type)] = stud[key]
         else:
-            dict_exercises[key[-2:]] = dict_exercises.get(key[-2:]) + stud[key]
+            dict_values[column_name(key, type)] = dict_values.get(column_name(key, type)) + stud[key]
+    return dict_values
+    
+    
+def print_json(stud):
+    dict_exercises = dict_of_values(stud, "exercises")
     json_dict = dict()
     json_dict["mean"] = numpy.mean(list(dict_exercises.values()))
     json_dict["median"] = numpy.median(list(dict_exercises.values()))
     json_dict["total"] = float(numpy.sum(list(dict_exercises.values())))
     json_dict["passed"] = int(numpy.sum(numpy.array(list(dict_exercises.values())).astype(bool)))
-
-    dict_dates = dict()
-    for key in stud.keys():
-        if key[:-3] not in dict_dates.keys():
-            dict_dates[key[:-3]] = stud[key]
-        else:
-            dict_dates[key[:-3]] = dict_dates.get(key[:-3]) + stud[key]
+    dict_dates = dict_of_values(stud, "dates")
     dates = numpy.array([int(datetime.datetime(int(key[0:4]), int(key[5:7]), int(key[8:10])).timestamp()//(60*60*24)) for key in dict_dates.keys()])
     min = dates.min()
     dates = dates - min
