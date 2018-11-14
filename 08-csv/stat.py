@@ -11,15 +11,15 @@ def column_name(column):
 
 
 def transform_dataframe(csv):
-    dict_of_dates = dict()
+    dict_of_new_vectors = dict()
     for column in csv:
         if column == "student":
             continue
-        if column_name(column) not in dict_of_dates.keys():
-            dict_of_dates[column_name(column)] = csv[column]
+        if column_name(column) not in dict_of_new_vectors.keys():
+            dict_of_new_vectors[column_name(column)] = csv[column]
         else:
-            dict_of_dates[column_name(column)] = dict_of_dates.get(column_name(column)) + csv[column]
-    data_frame = pandas.concat(dict_of_dates, axis=1)
+            dict_of_new_vectors[column_name(column)] = dict_of_new_vectors.get(column_name(column)) + csv[column]
+    data_frame = pandas.concat(dict_of_new_vectors, axis=1)
     return data_frame
 
 
