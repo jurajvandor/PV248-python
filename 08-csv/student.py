@@ -31,16 +31,16 @@ def print_json(stud):
     json_dict["passed"] = int(numpy.sum(numpy.array(list(dict_exercises.values())).astype(bool)))
     dict_dates = dict_of_values(stud, "dates")
     dates = numpy.array([int(datetime.datetime(int(key[0:4]), int(key[5:7]), int(key[8:10])).timestamp()//(60*60*24)) for key in dict_dates.keys()])
-    min = dates.min()
-    dates = dates - min
+    delta = datetime.datetime(2018, 9, 17).timestamp() // (60 * 60 * 24)
+    dates = dates - delta
     cumulated_points = numpy.cumsum(numpy.array([dict_dates[key] for key in dict_dates.keys()]))
     dates = numpy.vstack([dates, numpy.zeros(len(dates))]).T
     m, c = numpy.linalg.lstsq(dates, cumulated_points, rcond=None)[0]
     json_dict["regression slope"] = m
     result = numpy.linalg.solve([[m]], [c+16])
-    json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+min)*60*60*24))[0:10]
+    json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
     result = numpy.linalg.solve([[m]], [c+20])
-    json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+min)*60*60*24))[0:10]
+    json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
     json.dump(json_dict, sys.stdout, indent=4)
 
 
