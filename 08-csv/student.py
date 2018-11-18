@@ -37,10 +37,11 @@ def print_json(stud):
     dates = numpy.vstack([dates, numpy.zeros(len(dates))]).T
     m, c = numpy.linalg.lstsq(dates, cumulated_points, rcond=None)[0]
     json_dict["regression slope"] = m
-    result = numpy.linalg.solve([[m]], [c+16])
-    json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
-    result = numpy.linalg.solve([[m]], [c+20])
-    json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
+    if m != 0:
+        result = numpy.linalg.solve([[m]], [c+16])
+        json_dict["date 16"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
+        result = numpy.linalg.solve([[m]], [c+20])
+        json_dict["date 20"] = str(datetime.datetime.fromtimestamp((result+delta)*60*60*24))[0:10]
     json.dump(json_dict, sys.stdout, indent=4)
 
 
