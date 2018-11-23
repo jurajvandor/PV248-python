@@ -3,6 +3,7 @@ import sys
 import json
 import numpy
 import datetime
+import collections
 
 
 def column_name(column, type):
@@ -29,7 +30,8 @@ def print_json(stud):
     json_dict["median"] = numpy.median(list(dict_exercises.values()))
     json_dict["total"] = float(numpy.sum(list(dict_exercises.values())))
     json_dict["passed"] = int(numpy.sum(numpy.array(list(dict_exercises.values())).astype(bool)))
-    dict_dates = dict_of_values(stud, "dates")
+    dict_dates = collections.OrderedDict(sorted(dict_of_values(stud, "dates").items()))
+    print(dict_dates)
     dates = numpy.array([datetime.date(int(key[0:4]), int(key[5:7]), int(key[8:10])) for key in dict_dates.keys()])
     delta_time = datetime.date(2018, 9, 17)
     dates = numpy.array([item.days for item in (dates - delta_time)])
