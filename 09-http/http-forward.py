@@ -63,9 +63,8 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         json_dict = dict()
         json_dict["code"] = response.getcode()
-        body = response.read()
-        print(body)
         json_dict["headers"] = response.getheaders()
+        body = response.read()
         try:
             decoded = is_json(body.decode())
         except UnicodeDecodeError:
@@ -74,7 +73,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             if decoded:
                 json_dict["json"] = json.loads(body.decode())
             else:
-                json_dict["content"] = str(body)
+                json_dict["content"] = str(body.decode())
         self.send_json(json_dict)
 
     def send_json(self, json_dict):
