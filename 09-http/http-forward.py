@@ -66,7 +66,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         json_dict["code"] = response.getcode()
         body = response.read()
         json_dict["headers"] = response.getheaders()
-        if response.getheader("Content-Type")[0:16] == "application/json" and is_json(body.decode()):
+        if is_json(body.decode()):
             json_dict["json"] = json.loads(body.decode())
         else:
             json_dict["content"] = str(body)
