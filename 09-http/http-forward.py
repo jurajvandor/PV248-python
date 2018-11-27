@@ -60,7 +60,6 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             self.create_json(client.getresponse())
 
     def create_json(self, response):
-        self.send_response(200)
         json_dict = dict()
         json_dict["code"] = response.getcode()
         json_dict["headers"] = response.getheaders()
@@ -77,6 +76,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         self.send_json(json_dict)
 
     def send_json(self, json_dict):
+        self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
         self.wfile.write(bytes(json.dumps(json_dict).encode()))
