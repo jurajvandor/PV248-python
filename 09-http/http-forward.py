@@ -64,11 +64,17 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         json_dict = dict()
         json_dict["code"] = response.getcode()
         body = response.read()
+        print(body)
         json_dict["headers"] = response.getheaders()
-        if is_json(body.decode()):
-            json_dict["json"] = json.loads(body.decode())
-        else:
+        try:
+            decoded = is_json(body.decode())
+        except UnicodeDecodeError:
             json_dict["content"] = str(body)
+        else:
+            if decoded:
+                json_dict["json"] = json.loads(body.decode())
+            else:
+                json_dict["content"] = str(body)
         self.send_json(json_dict)
 
     def send_json(self, json_dict):
